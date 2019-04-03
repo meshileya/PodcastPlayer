@@ -13,6 +13,7 @@
 		043C88B2224F3BAF002CC0DA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 043C88B1224F3BAF002CC0DA /* Assets.xcassets */; };
 		043C88B5224F3BAF002CC0DA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 043C88B3224F3BAF002CC0DA /* LaunchScreen.storyboard */; };
 		043C88C0224F3BAF002CC0DA /* VideoPlayerWithXMLDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043C88BF224F3BAF002CC0DA /* VideoPlayerWithXMLDataTests.swift */; };
+		048F560522555FA6004ED26A /* UIStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048F560422555FA6004ED26A /* UIStackView.swift */; };
 		04C2C8DE224F86350038A36D /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C2C8DD224F86350038A36D /* UIView.swift */; };
 		04C2C8E1224F865D0038A36D /* ProgressProtocolExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C2C8E0224F865D0038A36D /* ProgressProtocolExtension.swift */; };
 		04C2C8E3224F86850038A36D /* ApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C2C8E2224F86850038A36D /* ApiService.swift */; };
@@ -28,7 +29,6 @@
 		04C2C91022502B4D0038A36D /* PodCastPlauerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C2C90F22502B4D0038A36D /* PodCastPlauerExtension.swift */; };
 		04C2C91222502B780038A36D /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C2C91122502B780038A36D /* UIApplication.swift */; };
 		04C2C914225081910038A36D /* CMTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C2C913225081910038A36D /* CMTime.swift */; };
-		04C2C916225083820038A36D /* GenericController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C2C915225083820038A36D /* GenericController.swift */; };
 		04C2C91822509A310038A36D /* UIViewDialogProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C2C91722509A310038A36D /* UIViewDialogProtocol.swift */; };
 		04C2C91A22509A850038A36D /* ProtocolExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C2C91922509A850038A36D /* ProtocolExtension.swift */; };
 		04C2C91C2250CF340038A36D /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C2C91B2250CF340038A36D /* String.swift */; };
@@ -57,6 +57,7 @@
 		043C88BB224F3BAF002CC0DA /* VideoPlayerWithXMLDataTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VideoPlayerWithXMLDataTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		043C88BF224F3BAF002CC0DA /* VideoPlayerWithXMLDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerWithXMLDataTests.swift; sourceTree = "<group>"; };
 		043C88C1224F3BAF002CC0DA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		048F560422555FA6004ED26A /* UIStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStackView.swift; sourceTree = "<group>"; };
 		04C2C8DD224F86350038A36D /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		04C2C8E0224F865D0038A36D /* ProgressProtocolExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressProtocolExtension.swift; sourceTree = "<group>"; };
 		04C2C8E2224F86850038A36D /* ApiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiService.swift; sourceTree = "<group>"; };
@@ -72,7 +73,6 @@
 		04C2C90F22502B4D0038A36D /* PodCastPlauerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodCastPlauerExtension.swift; sourceTree = "<group>"; };
 		04C2C91122502B780038A36D /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
 		04C2C913225081910038A36D /* CMTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CMTime.swift; sourceTree = "<group>"; };
-		04C2C915225083820038A36D /* GenericController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericController.swift; sourceTree = "<group>"; };
 		04C2C91722509A310038A36D /* UIViewDialogProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewDialogProtocol.swift; sourceTree = "<group>"; };
 		04C2C91922509A850038A36D /* ProtocolExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolExtension.swift; sourceTree = "<group>"; };
 		04C2C91B2250CF340038A36D /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
@@ -195,6 +195,7 @@
 				04C2C91122502B780038A36D /* UIApplication.swift */,
 				04C2C913225081910038A36D /* CMTime.swift */,
 				04C2C91B2250CF340038A36D /* String.swift */,
+				048F560422555FA6004ED26A /* UIStackView.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -223,7 +224,6 @@
 				04C2C904225005B10038A36D /* PodDetailsCell.swift */,
 				04C2C906225005C30038A36D /* PodDetailsController.swift */,
 				04C2C90822500D6A0038A36D /* PodHeaderCell.swift */,
-				04C2C915225083820038A36D /* GenericController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -448,7 +448,6 @@
 				04C2C91A22509A850038A36D /* ProtocolExtension.swift in Sources */,
 				04C2C91222502B780038A36D /* UIApplication.swift in Sources */,
 				04C2C8FD224F8BB50038A36D /* ChannelCell.swift in Sources */,
-				04C2C916225083820038A36D /* GenericController.swift in Sources */,
 				043C88AD224F3BAC002CC0DA /* ViewController.swift in Sources */,
 				04C2C8E7224F87010038A36D /* HomeFeedController.swift in Sources */,
 				04C2C8E3224F86850038A36D /* ApiService.swift in Sources */,
@@ -461,6 +460,7 @@
 				04C2C90B225026660038A36D /* UIColor.swift in Sources */,
 				04C2C90E22502B010038A36D /* PodCastPlayerView.swift in Sources */,
 				043C88AB224F3BAC002CC0DA /* AppDelegate.swift in Sources */,
+				048F560522555FA6004ED26A /* UIStackView.swift in Sources */,
 				04C2C901224FF0510038A36D /* GenericMapperModel.swift in Sources */,
 				04C2C91C2250CF340038A36D /* String.swift in Sources */,
 				04C2C91822509A310038A36D /* UIViewDialogProtocol.swift in Sources */,

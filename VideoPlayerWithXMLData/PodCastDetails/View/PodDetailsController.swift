@@ -18,24 +18,11 @@ class PodDetailsController : UIViewController, UICollectionViewDelegateFlowLayou
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-        
         view.addSubview(collectionView)
         view.addSubview(backArrowImageView)
         
         initViews()
         itemList = videoData?.items
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: animated)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        self.navigationController?.navigationBar.tintColor = UIColor.white
-        navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -127,11 +114,8 @@ class PodDetailsController : UIViewController, UICollectionViewDelegateFlowLayou
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         //Handle on item seleted here
-        let vc = MainTabBarController()
-        vc.hidesBottomBarWhenPushed = true
-        vc.maximizePlayerDetails(episode: itemList?[indexPath.item], playlistEpisodes: self.videoData!.items!)
-        let navigation = UINavigationController(rootViewController: vc)
-        UIApplication.topViewController()?.present(navigation, animated: true, completion: nil)
+        playerDetailsView.show()
+        maximizePlayerDetails(episode: itemList?[indexPath.item], playlistEpisodes: self.videoData!.items!)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -148,5 +132,24 @@ class PodDetailsController : UIViewController, UICollectionViewDelegateFlowLayou
         return cell
     }
     
+    let playerDetailsView = PlayerDetailsView()
     
+    @objc func minimizePlayerDetails() {
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            self.view.layoutIfNeeded()
+            self.view.transform = .identity
+            self.playerDetailsView.maximizedStackView.isHidden = true
+            self.playerDetailsView.minimizedStackView.isHidden = false
+            self.playerDetailsView.maximizedStackView.alpha = 0
+            self.playerDetailsView.miniPlayerView.alpha = 1
+        })
+    }
+    
+    func maximizePlayerDetails(episode: Item?, playlistEpisodes: [Item] = []) {
+        if episode != nil {
+            playerDetailsView.episode = episode
+        }
+        
+        playerDetailsView.playlistEpisodes = playlistEpisodes
+    }
 }

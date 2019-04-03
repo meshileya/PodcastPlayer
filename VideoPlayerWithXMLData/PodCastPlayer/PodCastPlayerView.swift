@@ -17,7 +17,6 @@ class PlayerDetailsView: UIView, UIViewDialogProtocol {
         let avPlayer = AVPlayer()
         avPlayer.automaticallyWaitsToMinimizeStalling = false
         avPlayer.volume = 1.0
-        
         return avPlayer
     }()
     
@@ -38,12 +37,7 @@ class PlayerDetailsView: UIView, UIViewDialogProtocol {
                 })
                 MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPMediaItemPropertyArtwork] = artworkItem
             }
-            setupRemoteControl()
-            setupAudioSession()
-            setupInterruptionObserver()
-            observePlayerCurrentTime()
-            observeBoundaryTime()
-            handleCurrentTimeSliderChange()
+           
         }
         
     }
@@ -285,11 +279,12 @@ func observePlayerCurrentTime() {
     
     lazy var miniPlayerView: UIView = {
         let view = UIView()
+        view.backgroundColor = .red
         view.translatesAutoresizingMaskIntoConstraints = false
-        
         view.addSubview(minimizedStackView)
-        view.heightAnchor.constraint(equalToConstant: 100).isActive = true
-        view.widthAnchor.constraint(equalToConstant: 400).isActive = true
+        view.sizeToFit()
+        minimizedStackView.heightAnchor.constraint(equalToConstant: 64).isActive = true
+        minimizedStackView.widthAnchor.constraint(equalToConstant: 350).isActive = true
         return view
     }()
     
@@ -297,14 +292,14 @@ func observePlayerCurrentTime() {
         let view = UIStackView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.axis = .horizontal
+        view.sizeToFit()
         view.distribution = .fillProportionally
+        view.alignment = .center
         view.addArrangedSubview(miniEpisodeImageView)
         view.addArrangedSubview(miniTitleLabel)
         view.addArrangedSubview(miniPlayPauseButton)
         view.addArrangedSubview(miniFastForwardButton)
         
-        view.heightAnchor.constraint(equalToConstant: 64).isActive = true
-        view.widthAnchor.constraint(equalToConstant: 400).isActive = true
         return view
     }()
     
@@ -312,21 +307,26 @@ func observePlayerCurrentTime() {
         let view = UIStackView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.axis = .vertical
-        view.spacing = 10
-        view.distribution = .fillProportionally
-//        view.layer.masksToBounds = true
+        view.spacing = 1
+        view.sizeToFit()
         view.alignment = .fill
+        view.distribution = .fillProportionally
+        view.setBackgroundColor(.white)
+//        view.alignment = .
+        view.addArrangedSubview(dismissLabel)
         view.addArrangedSubview(episodeImageView)
         view.addArrangedSubview(currentTimeSlider)
         view.addArrangedSubview(maximizedInnerStackView)
         view.addArrangedSubview(titleLabel)
         view.addArrangedSubview(playerStackView)
+        
+        
         return view
     }()
     
     @IBAction func handleDismiss(_ sender: Any) {
-        print("Dismmis clicked")
-        UIApplication.mainTabBarController()?.minimizePlayerDetails()
+        print("Dismmissssss clicked")
+        self.dismiss()
     }
     
     lazy var episodeImageView: UIImageView = {
@@ -346,6 +346,7 @@ func observePlayerCurrentTime() {
         let view = UISlider()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.isUserInteractionEnabled = true
+        view.heightAnchor.constraint(equalToConstant: 50).isActive = true
         return view
     }()
     
@@ -353,6 +354,7 @@ func observePlayerCurrentTime() {
         let view = UIStackView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.axis = .horizontal
+        view.distribution = .fill
         view.addArrangedSubview(currentTimeLabel)
         view.addArrangedSubview(durationLabel)
         view.heightAnchor.constraint(equalToConstant: 64).isActive = true
@@ -360,6 +362,29 @@ func observePlayerCurrentTime() {
         return view
     }()
     
+    lazy var dismissLabel : UIButton = {
+        let button = UIButton();
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitleColor(UIColor.white, for: UIControl.State())
+        button.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        button.layer.cornerRadius = 4;
+        button.backgroundColor = .red
+        button.setTitle("Dismiss", for: .normal)
+        button.layer.masksToBounds = true
+        button.imageEdgeInsets = .init(top: 8, left: 8, bottom: 8, right: 8)
+        button.addTarget(self, action: #selector(handleDismiss), for: .touchUpInside)
+        return button
+    }()
+    
+    lazy var dismissLabel1: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 0
+        label.text = "Dismiss"
+        label.textAlignment = .center
+        label.font = UIFont(name: "Heiti TC", size: 13)
+        return label
+    }()
     
     
     lazy var durationLabel: UILabel = {
@@ -396,9 +421,12 @@ func observePlayerCurrentTime() {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.axis = .horizontal
         view.distribution = .fillProportionally
+        view.alignment = .fill
         view.addArrangedSubview(backwardButton)
         view.addArrangedSubview(playPauseButton)
         view.addArrangedSubview(forwardButton)
+        view.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        view.widthAnchor.constraint(equalToConstant: 400).isActive = true
         return view
     }()
     
@@ -445,6 +473,7 @@ func observePlayerCurrentTime() {
     }()
     
     @objc func handlePlayPause() {
+        print("BUTTON PAUSE")
         if player.timeControlStatus == .paused {
             player.play()
             playPauseButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
@@ -475,46 +504,48 @@ func observePlayerCurrentTime() {
     override init(frame: CGRect) {
         super.init(frame: frame)
         initViews()
-        self.backgroundColor = .white
+        setupRemoteControl()
+        setupAudioSession()
+        setupInterruptionObserver()
+        observePlayerCurrentTime()
+        observeBoundaryTime()
+        handleCurrentTimeSliderChange()
     }
+    
     func initViews(){
-        backgroundColor = .white
-        addSubview(containerView)
-        containerView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        containerView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -35).isActive = true
-        containerView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 35).isActive = true
-        containerView.heightAnchor.constraint(equalToConstant: 400).isActive = true
-    }
-    lazy var containerView : UIStackView = {
-        let view = UIStackView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.isUserInteractionEnabled = true
-        view.axis = .vertical
-        view.distribution = .fillProportionally
-        view.alignment = .fill
-        view.backgroundColor = .white
-        view.addArrangedSubview(maximizedStackView)
-        view.addArrangedSubview(miniPlayerView)
+        sizeToFit()
+        addSubview(maximizedStackView)
+        addSubview(miniPlayerView)
+        miniPlayerView.isHidden = true
+        maximizedStackView.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        maximizedStackView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        maximizedStackView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         
-        maximizedStackView.heightAnchor.constraint(equalToConstant: self.frame.height - 400).isActive = true
-        maximizedStackView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+        
+        miniPlayerView.heightAnchor.constraint(equalToConstant: 64).isActive = true
+        miniPlayerView.widthAnchor.constraint(equalToConstant: 350).isActive = true
+        miniPlayerView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        miniPlayerView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20).isActive = true
         
         maximizedStackView.isUserInteractionEnabled = true
         maximizedStackView.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handleDismissalPan)))
         
+        
+        maximizedInnerStackView.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
+        
         isUserInteractionEnabled = true
-        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapMaximize)))
+        //        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleDismissalPan)))
         panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
         addGestureRecognizer(panGesture)
         
-        return view
-    }()
-    
+        dismissLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        dismissLabel.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        dismissLabel.isUserInteractionEnabled = true
+        dismissLabel.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handleDismiss)))
+        
+    }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    
-    
 }

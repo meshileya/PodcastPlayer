@@ -24,9 +24,5 @@ extension UIApplication {
         }
         return viewController
     }
-    
-    static func mainTabBarController() -> MainTabBarController? {
-        return shared.keyWindow?.rootViewController as? MainTabBarController
-    }
 }
 
