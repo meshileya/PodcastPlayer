@@ -80,8 +80,6 @@ class HomeFeedController: UIViewController, UICollectionViewDelegateFlowLayout, 
         let vc = PodDetailsController()
         vc.videoData = itemList[indexPath.item].channel
         self.present(vc, animated: true, completion: nil)
-        
-//        self.navigationController?.pushViewController(vc, animated: true);
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

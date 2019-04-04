@@ -20,6 +20,21 @@ class PlayerDetailsView: UIView, UIViewDialogProtocol {
         return avPlayer
     }()
     
+    var videoData: Channel!{
+        didSet{
+            guard let url = URL(string: videoData?.image?[0].url ?? "") else { return }
+            episodeImageView.kf.setImage(with: url)
+            
+            miniEpisodeImageView.kf.setImage(with: url, placeholder: nil, options: nil, progressBlock: nil) { (image, _, _, _) in
+                let image = self.episodeImageView.image ?? UIImage()
+                let artworkItem = MPMediaItemArtwork(boundsSize: .zero, requestHandler: { (size) -> UIImage in
+                    return image
+                })
+                MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPMediaItemPropertyArtwork] = artworkItem
+            }
+        }
+    }
+    
     var episode: Item! {
         didSet {
             titleLabel.text = episode.title
@@ -27,7 +42,7 @@ class PlayerDetailsView: UIView, UIViewDialogProtocol {
             setupNowPlayingInfo()
             
             playEpisode()
-            guard let url = URL(string: episode.image?._href ?? "") else { return }
+            guard let url = URL(string: videoData?.image?[0].url ?? "") else { return }
             episodeImageView.kf.setImage(with: url)
             
             miniEpisodeImageView.kf.setImage(with: url, placeholder: nil, options: nil, progressBlock: nil) { (image, _, _, _) in

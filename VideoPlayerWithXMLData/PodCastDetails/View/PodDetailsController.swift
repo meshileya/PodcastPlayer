@@ -114,6 +114,7 @@ class PodDetailsController : UIViewController, UICollectionViewDelegateFlowLayou
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         //Handle on item seleted here
+        playerDetailsView.videoData = videoData
         playerDetailsView.show()
         maximizePlayerDetails(episode: itemList?[indexPath.item], playlistEpisodes: self.videoData!.items!)
     }
