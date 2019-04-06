@@ -532,7 +532,7 @@ func observePlayerCurrentTime() {
         addSubview(maximizedStackView)
         addSubview(miniPlayerView)
         miniPlayerView.isHidden = true
-        maximizedStackView.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        maximizedStackView.topAnchor.constraint(equalTo: topAnchor, constant: 50).isActive = true
         maximizedStackView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         maximizedStackView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         
