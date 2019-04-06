@@ -50,7 +50,7 @@ class PodDetailsController : UIViewController, UICollectionViewDelegateFlowLayou
                     self.headerView?.animator?.finishAnimation(at: .current)
                     self.navigationController?.popViewController(animated: true)
                 }
-//        dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
     
     lazy var collectionView : DynamicCollectionView = {
@@ -63,7 +63,7 @@ class PodDetailsController : UIViewController, UICollectionViewDelegateFlowLayou
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.backgroundColor = .clear
-        collectionView.contentInsetAdjustmentBehavior = .never
+            collectionView.contentInsetAdjustmentBehavior = .never
         return collectionView
     }()
     

@@ -24,7 +24,11 @@ class HomeFeedController: UIViewController, UICollectionViewDelegateFlowLayout, 
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.backgroundColor = .clear
-        collectionView.contentInsetAdjustmentBehavior = .always
+        if #available(iOS 11.0, *) {
+            collectionView.contentInsetAdjustmentBehavior = .always
+        } else {
+            // Fallback on earlier versions
+        }
         return collectionView
     }()
     
