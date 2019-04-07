@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        UINavigationBar.appearance().barTintColor = .blue
+        UINavigationBar.appearance().barTintColor = .black
         UINavigationBar.appearance().tintColor = UIColor.white
         UIApplication.shared.statusBarStyle = .lightContent
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
@@ -47,6 +47,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+    
+    override func remoteControlReceived(with event: UIEvent?) {
+        
+        print("remote::")
+        
+        
+        guard let event = event else {
+            print("no event\n")
+            return
+        }
+        guard event.type == UIEvent.EventType.remoteControl else {
+            print("received other event type\n")
+            return
+        }
+        switch event.subtype {
+        case UIEventSubtype.remoteControlPlay:
+            print("received remote play\n")
+        case UIEventSubtype.remoteControlPause:
+            print("received remote pause\n")
+        case UIEventSubtype.remoteControlTogglePlayPause:
+            print("received toggle\n")
+        case UIEventSubtype.remoteControlNextTrack:
+            print("clicked next \n")
+        case UIEventSubtype.remoteControlPreviousTrack:
+            print("clicked Prev \n")
+        default:
+            print("received \(event.subtype) which we did not process\n")
+        }
     }
 
 

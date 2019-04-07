@@ -56,7 +56,7 @@ class ChannelCell: UICollectionViewCell {
     lazy var thumbnailImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "icon_default_avatar")
-        imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.widthAnchor.constraint(equalToConstant: self.frame.width).isActive = true
@@ -68,7 +68,7 @@ class ChannelCell: UICollectionViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Not Available"
-        label.font = UIFont(name: "Heiti TC", size: 15)
+        label.font = UIFont.systemFont(ofSize: 15, weight: .bold)
         label.numberOfLines = 2
         label.textColor = .white
         return label
@@ -78,7 +78,7 @@ class ChannelCell: UICollectionViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Not Available"
-        label.font = UIFont(name: "Heiti TC", size: 13)
+        label.font = UIFont.systemFont(ofSize: 13, weight: .medium)
         label.numberOfLines = 2
         label.textColor = .white
         return label
@@ -97,7 +97,8 @@ class ChannelCell: UICollectionViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "MORE INFO"
-        label.font = UIFont(name: "Heiti TC", size: 15)
+        label.font = UIFont.systemFont(ofSize: 10, weight: .bold)
+//        label.font = UIFont(name: "Heiti TC", size: 15)
         label.numberOfLines = 2
         label.textColor = .white
         return label
@@ -125,10 +126,10 @@ class ChannelCell: UICollectionViewCell {
     
     lazy var infoDetailsView : UIView = {
         let view = UIView()
-        view.backgroundColor = .black
         view.layer.masksToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
         view.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        view.backgroundColor = .black
         view.widthAnchor.constraint(equalToConstant: self.frame.width).isActive = true
         view.addSubview(titleLabel)
         view.addSubview(subtitleTextView)
@@ -174,22 +175,40 @@ class ChannelCell: UICollectionViewCell {
     
     var titleLabelHeightConstraint: NSLayoutConstraint?
     
+    lazy var allView : UIView = {
+        let view = UIView()
+        view.layer.masksToBounds = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .black
+        view.layer.cornerRadius = 15
+        view.widthAnchor.constraint(equalToConstant: self.frame.width).isActive = true
+        view.addSubview(thumbnailImageView)
+        view.addSubview(infoDetailsView)
+        view.addConstraint(NSLayoutConstraint(item: thumbnailImageView, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 8))
+        //left constraint
+        view.addConstraint(NSLayoutConstraint(item: thumbnailImageView, attribute: .left, relatedBy: .equal, toItem: view, attribute: .left, multiplier: 1, constant: 0))
+        //right constraint
+        view.addConstraint(NSLayoutConstraint(item: thumbnailImageView, attribute: .right, relatedBy: .equal, toItem: view, attribute: .right, multiplier: 1, constant: -0))
+        
+        view.addConstraint(NSLayoutConstraint(item: infoDetailsView, attribute: .top, relatedBy: .equal, toItem: thumbnailImageView, attribute: .bottom, multiplier: 1, constant: 1))
+        //left constraint
+        view.addConstraint(NSLayoutConstraint(item: infoDetailsView, attribute: .left, relatedBy: .equal, toItem: view, attribute: .left, multiplier: 1, constant: 10))
+        //right constraint
+        view.addConstraint(NSLayoutConstraint(item: infoDetailsView, attribute: .right, relatedBy: .equal, toItem: view, attribute: .right, multiplier: 1, constant: -10))
+        view.addConstraint(NSLayoutConstraint(item: infoDetailsView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: -10))
+        return view
+        
+    }()
+    
     func setupViews() {
-        addSubview(thumbnailImageView)
-        addSubview(infoDetailsView)
+        addSubview(allView)
+        allView.widthAnchor.constraint(equalToConstant: frame.width).isActive = true
+        allView.heightAnchor.constraint(equalToConstant: frame.height).isActive = true
+        allView.rightAnchor.constraint(equalTo: rightAnchor, constant: -25).isActive = true
+        allView.leftAnchor.constraint(equalTo: leftAnchor, constant: 25).isActive = true
         
         //top constraint
-        addConstraint(NSLayoutConstraint(item: thumbnailImageView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1, constant: 8))
-        //left constraint
-        addConstraint(NSLayoutConstraint(item: thumbnailImageView, attribute: .left, relatedBy: .equal, toItem: self, attribute: .left, multiplier: 1, constant: 0))
-        //right constraint
-        addConstraint(NSLayoutConstraint(item: thumbnailImageView, attribute: .right, relatedBy: .equal, toItem: self, attribute: .right, multiplier: 1, constant: -0))
         
-        addConstraint(NSLayoutConstraint(item: infoDetailsView, attribute: .top, relatedBy: .equal, toItem: thumbnailImageView, attribute: .bottom, multiplier: 1, constant: 1))
-        //left constraint
-        addConstraint(NSLayoutConstraint(item: infoDetailsView, attribute: .left, relatedBy: .equal, toItem: self, attribute: .left, multiplier: 1, constant: 0))
-        //right constraint
-        addConstraint(NSLayoutConstraint(item: infoDetailsView, attribute: .right, relatedBy: .equal, toItem: self, attribute: .right, multiplier: 1, constant: -0))
         
         //top constraint
     }
@@ -197,6 +216,8 @@ class ChannelCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
+//        self.contentView.layer.cornerRadius = 10
+    
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -212,19 +233,8 @@ class ChannelCell: UICollectionViewCell {
         gradientLayer.frame = bounds
         //        self.layer.shadowRadius = shadowBlur
         //        self.layer.shadowOpacity = 1
-        infoDetailsView.layer.cornerRadius = cornerRadius
+         self.contentView.layer.cornerRadius = 10
+        infoDetailsView.layer.cornerRadius = 10
         infoDetailsView.layer.insertSublayer(gradientLayer, at: 0)
-    }
-    
-    @IBInspectable var shadowBlur: CGFloat = 3 {
-        didSet {
-            setNeedsLayout()
-        }
-    }
-    
-    @IBInspectable var cornerRadius: CGFloat = 0 {
-        didSet {
-            setNeedsLayout()
-        }
     }
 }

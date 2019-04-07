@@ -12,7 +12,7 @@ import Kingfisher
 import AVKit
 import MediaPlayer
 
-class PlayerDetailsView: UIView, UIViewDialogProtocol {
+class PlayerDetailsView: CustomView, UIViewDialogProtocol {
     var player: AVPlayer = {
         let avPlayer = AVPlayer()
         avPlayer.automaticallyWaitsToMinimizeStalling = false
@@ -80,6 +80,7 @@ func observePlayerCurrentTime() {
             guard let `self` = self else { return }
             self.currentTimeLabel.text = time.toDisplayString()
             print("TIMEEE")
+            
             let durationTime = self.player.currentItem?.duration
             self.durationLabel.text = durationTime?.toDisplayString()
             self.updateCurrentTimeSlider()
@@ -206,6 +207,7 @@ func observePlayerCurrentTime() {
         super.awakeFromNib()
         
         
+        
     }
     
     fileprivate func setupInterruptionObserver() {
@@ -261,6 +263,7 @@ func observePlayerCurrentTime() {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 1
+        label.widthAnchor.constraint(equalToConstant: 150).isActive = true
         return label
     }()
     
@@ -268,7 +271,8 @@ func observePlayerCurrentTime() {
         let button = UIButton();
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitleColor(UIColor.white, for: UIControl.State())
-        button.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        button.heightAnchor.constraint(equalToConstant: 35).isActive = true
+        button.widthAnchor.constraint(equalToConstant: 35).isActive = true
         button.layer.cornerRadius = 4;
         button.layer.masksToBounds = true
         button.imageEdgeInsets = .init(top: 8, left: 8, bottom: 8, right: 8)
@@ -288,18 +292,21 @@ func observePlayerCurrentTime() {
         button.imageEdgeInsets = .init(top: 8, left: 8, bottom: 8, right: 8)
         button.setImage(#imageLiteral(resourceName: "next"), for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
-        button.addTarget(self, action: #selector(handlePlayPause), for: .touchUpInside)
+        button.addTarget(self, action: #selector(handleNextTrack), for: .touchUpInside)
         return button
     }()
     
     lazy var miniPlayerView: UIView = {
         let view = UIView()
-        view.backgroundColor = .red
+        view.backgroundColor = .launcherLightBackgroundColor()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(minimizedStackView)
+        view.layer.cornerRadius = 15
         view.sizeToFit()
         minimizedStackView.heightAnchor.constraint(equalToConstant: 64).isActive = true
         minimizedStackView.widthAnchor.constraint(equalToConstant: 350).isActive = true
+        minimizedStackView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -15).isActive = true
+        minimizedStackView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 15).isActive = true
         return view
     }()
     
@@ -309,7 +316,6 @@ func observePlayerCurrentTime() {
         view.axis = .horizontal
         view.sizeToFit()
         view.distribution = .fillProportionally
-        view.alignment = .center
         view.addArrangedSubview(miniEpisodeImageView)
         view.addArrangedSubview(miniTitleLabel)
         view.addArrangedSubview(miniPlayPauseButton)
@@ -336,12 +342,17 @@ func observePlayerCurrentTime() {
         view.addArrangedSubview(playerStackView)
         
         
+        
+        
+        
         return view
     }()
     
     @IBAction func handleDismiss(_ sender: Any) {
         print("Dismmissssss clicked")
-        self.dismiss()
+//        self.dismiss()
+        self.miniPlayerView.isHidden = false
+        self.maximizedStackView.isHidden = true
     }
     
     lazy var episodeImageView: UIImageView = {
@@ -369,11 +380,14 @@ func observePlayerCurrentTime() {
         let view = UIStackView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.axis = .horizontal
-        view.distribution = .fill
+        view.distribution = .fillEqually
+        view.alignment = .fill
         view.addArrangedSubview(currentTimeLabel)
+        view.addArrangedSubview(dummyLabel)
+        view.addArrangedSubview(dummyLabel2)
         view.addArrangedSubview(durationLabel)
         view.heightAnchor.constraint(equalToConstant: 64).isActive = true
-        view.widthAnchor.constraint(equalToConstant: 400).isActive = true
+        view.widthAnchor.constraint(equalToConstant: self.frame.width).isActive = true
         return view
     }()
     
@@ -384,7 +398,7 @@ func observePlayerCurrentTime() {
         button.heightAnchor.constraint(equalToConstant: 50).isActive = true
         button.layer.cornerRadius = 4;
         button.backgroundColor = .red
-        button.setTitle("Dismiss", for: .normal)
+        button.setTitle("Minimize", for: .normal)
         button.layer.masksToBounds = true
         button.imageEdgeInsets = .init(top: 8, left: 8, bottom: 8, right: 8)
         button.addTarget(self, action: #selector(handleDismiss), for: .touchUpInside)
@@ -395,7 +409,7 @@ func observePlayerCurrentTime() {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
-        label.text = "Dismiss"
+        label.text = "Minimize"
         label.textAlignment = .center
         label.font = UIFont(name: "Heiti TC", size: 13)
         return label
@@ -403,6 +417,24 @@ func observePlayerCurrentTime() {
     
     
     lazy var durationLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 0
+        label.text = ""
+        label.font = UIFont(name: "Heiti TC", size: 13)
+        return label
+    }()
+    
+    lazy var dummyLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 0
+        label.text = ""
+        label.font = UIFont(name: "Heiti TC", size: 13)
+        return label
+    }()
+    
+    lazy var dummyLabel2: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
@@ -424,6 +456,7 @@ func observePlayerCurrentTime() {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 1
+        label.textAlignment = .center
         label.heightAnchor.constraint(equalToConstant: 20).isActive = true
         label.widthAnchor.constraint(equalToConstant: 400).isActive = true
         label.text = "Title"
@@ -525,6 +558,14 @@ func observePlayerCurrentTime() {
         observePlayerCurrentTime()
         observeBoundaryTime()
         handleCurrentTimeSliderChange()
+        
+       
+//        if player.timeControlStatus == .playing {
+//            player.pause()
+//            //            btnPlay.setImage(UIImage(named: "control-play"), for: .normal)
+//
+//        }
+        
     }
     
     func initViews(){
@@ -532,9 +573,9 @@ func observePlayerCurrentTime() {
         addSubview(maximizedStackView)
         addSubview(miniPlayerView)
         miniPlayerView.isHidden = true
-        maximizedStackView.topAnchor.constraint(equalTo: topAnchor, constant: 50).isActive = true
+        maximizedStackView.topAnchor.constraint(equalTo: topAnchor, constant: 30).isActive = true
         maximizedStackView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        maximizedStackView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        maximizedStackView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         
         
         miniPlayerView.heightAnchor.constraint(equalToConstant: 64).isActive = true

@@ -9,31 +9,55 @@
 import Foundation
 import UIKit
 
-class PodDetailsController : UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, UICollectionViewDataSource, ControllerDelegate {
-    
-    var videoData : Channel?
+class PodDetailsController : UIView, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, UICollectionViewDataSource,UIViewDialogProtocol {
     
     var itemList : [Item]?
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.view.backgroundColor = .white
-        view.addSubview(collectionView)
-        view.addSubview(backArrowImageView)
-        
-        initViews()
-        itemList = videoData?.items
+    var videoData : Channel?{
+        didSet{
+            
+            itemList = videoData?.items
+            collectionView.reloadData()
+            
+        }
     }
     
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
+    var delegate : HomeFeedDelegate?
+    let playerDetailsView = PlayerDetailsView()
+    
+//    override func viewDidLoad() {
+//        super.viewDidLoad()
+//
+//    }
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        backgroundColor = .white
+        sizeToFit()
+        addSubview(collectionView)
+        addSubview(backArrowImageView)
+        widthAnchor.constraint(equalToConstant: self.frame.width).isActive = true
+        heightAnchor.constraint(equalToConstant: self.frame.height).isActive = true
+        
+        initViews()
+        
+        if playerDetailsView.player.rate != 0{
+            print("LAMIDI")
+        }else{
+            print("LAMIDI TEST STATUS")
+        }
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     func initViews(){
-        collectionView.widthAnchor.constraint(equalToConstant: view.frame.width).isActive = true
-        collectionView.heightAnchor.constraint(equalToConstant: view.frame.height).isActive = true
+        collectionView.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
+        collectionView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
+        collectionView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        collectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
         
-        backArrowImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 30).isActive = true
+        
+        backArrowImageView.topAnchor.constraint(equalTo: topAnchor, constant: 30).isActive = true
         backArrowImageView.isUserInteractionEnabled = true
         
         backArrowImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onBackClicked)))
@@ -48,9 +72,10 @@ class PodDetailsController : UIViewController, UICollectionViewDelegateFlowLayou
                     self.headerView?.animator?.pauseAnimation()
                     self.headerView?.animator?.stopAnimation(true)
                     self.headerView?.animator?.finishAnimation(at: .current)
-                    self.navigationController?.popViewController(animated: true)
+//                    self.navigationController?.popViewController(animated: true)
                 }
-        dismiss(animated: true, completion: nil)
+        self.dismiss()
+//        dismiss(animated: true, completion: nil)
     }
     
     lazy var collectionView : DynamicCollectionView = {
@@ -69,8 +94,9 @@ class PodDetailsController : UIViewController, UICollectionViewDelegateFlowLayou
     
     lazy var backArrowImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "icon_back_arrow")
+        imageView.image = UIImage(named: "icon_back_arrow")?.withRenderingMode(.alwaysTemplate)
         imageView.contentMode = .scaleAspectFit
+        imageView.tintColor = .white
         imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.widthAnchor.constraint(equalToConstant: 35).isActive = true
@@ -88,6 +114,9 @@ class PodDetailsController : UIViewController, UICollectionViewDelegateFlowLayou
             headerView?.animator.fractionComplete = 0
             return
         }
+        if contentOffsetY > 280{
+            backArrowImageView.tintColor = .black
+        }
         
         headerView?.animator.fractionComplete = abs(contentOffsetY) / 100
     }
@@ -99,16 +128,16 @@ class PodDetailsController : UIViewController, UICollectionViewDelegateFlowLayou
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return .init(width: view.frame.width, height: 340)
+        return .init(width: frame.width, height: 340)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         if UIDevice.current.userInterfaceIdiom == .pad{
-            return CGSize(width: ((view.frame.width) - 40), height: 150)
+            return CGSize(width: ((frame.width) - 40), height: 150)
         }
         else {
-            return CGSize(width: view.frame.width, height: 70)
+            return CGSize(width: frame.width, height: 70)
         }
     }
     
@@ -133,18 +162,7 @@ class PodDetailsController : UIViewController, UICollectionViewDelegateFlowLayou
         return cell
     }
     
-    let playerDetailsView = PlayerDetailsView()
     
-    @objc func minimizePlayerDetails() {
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-            self.view.layoutIfNeeded()
-            self.view.transform = .identity
-            self.playerDetailsView.maximizedStackView.isHidden = true
-            self.playerDetailsView.minimizedStackView.isHidden = false
-            self.playerDetailsView.maximizedStackView.alpha = 0
-            self.playerDetailsView.miniPlayerView.alpha = 1
-        })
-    }
     
     func maximizePlayerDetails(episode: Item?, playlistEpisodes: [Item] = []) {
         if episode != nil {

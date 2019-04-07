@@ -32,6 +32,7 @@
 		04C2C91822509A310038A36D /* UIViewDialogProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C2C91722509A310038A36D /* UIViewDialogProtocol.swift */; };
 		04C2C91A22509A850038A36D /* ProtocolExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C2C91922509A850038A36D /* ProtocolExtension.swift */; };
 		04C2C91C2250CF340038A36D /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C2C91B2250CF340038A36D /* String.swift */; };
+		04F2B9582259573600068DC8 /* HomeFeedProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F2B9572259573600068DC8 /* HomeFeedProtocol.swift */; };
 		3469B447575F157ADF08CA41 /* Pods_VideoPlayerWithXMLDataTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25F11C22B26754FE8125CF40 /* Pods_VideoPlayerWithXMLDataTests.framework */; };
 		6B25477155E8FA7D7A950EC1 /* Pods_VideoPlayerWithXMLData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EBE74A36183EF638C074950 /* Pods_VideoPlayerWithXMLData.framework */; };
 /* End PBXBuildFile section */
@@ -76,6 +77,7 @@
 		04C2C91722509A310038A36D /* UIViewDialogProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewDialogProtocol.swift; sourceTree = "<group>"; };
 		04C2C91922509A850038A36D /* ProtocolExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolExtension.swift; sourceTree = "<group>"; };
 		04C2C91B2250CF340038A36D /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		04F2B9572259573600068DC8 /* HomeFeedProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeedProtocol.swift; sourceTree = "<group>"; };
 		15C3D60CAC5DB77B12724B27 /* Pods-VideoPlayerWithXMLDataTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VideoPlayerWithXMLDataTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-VideoPlayerWithXMLDataTests/Pods-VideoPlayerWithXMLDataTests.release.xcconfig"; sourceTree = "<group>"; };
 		25F11C22B26754FE8125CF40 /* Pods_VideoPlayerWithXMLDataTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VideoPlayerWithXMLDataTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7EBE74A36183EF638C074950 /* Pods_VideoPlayerWithXMLData.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VideoPlayerWithXMLData.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -153,6 +155,7 @@
 		04C2C8D6224F85C00038A36D /* HomeFeed */ = {
 			isa = PBXGroup;
 			children = (
+				04F2B9562259571F00068DC8 /* Protocol */,
 				04C2C8D7224F85C80038A36D /* View */,
 			);
 			path = HomeFeed;
@@ -235,6 +238,14 @@
 				04C2C90F22502B4D0038A36D /* PodCastPlauerExtension.swift */,
 			);
 			path = PodCastPlayer;
+			sourceTree = "<group>";
+		};
+		04F2B9562259571F00068DC8 /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				04F2B9572259573600068DC8 /* HomeFeedProtocol.swift */,
+			);
+			path = Protocol;
 			sourceTree = "<group>";
 		};
 		35AC1369F10E4E0D580BC1AE /* Frameworks */ = {
@@ -450,6 +461,7 @@
 				04C2C8FD224F8BB50038A36D /* ChannelCell.swift in Sources */,
 				043C88AD224F3BAC002CC0DA /* ViewController.swift in Sources */,
 				04C2C8E7224F87010038A36D /* HomeFeedController.swift in Sources */,
+				04F2B9582259573600068DC8 /* HomeFeedProtocol.swift in Sources */,
 				04C2C8E3224F86850038A36D /* ApiService.swift in Sources */,
 				04C2C91022502B4D0038A36D /* PodCastPlauerExtension.swift in Sources */,
 				04C2C907225005C30038A36D /* PodDetailsController.swift in Sources */,

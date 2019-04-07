@@ -11,7 +11,7 @@ import UIKit
 
 class CustomNavigationController: UINavigationController {
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .default
+        return .lightContent
     }
 }
 
@@ -23,6 +23,7 @@ class NavigationHelper {
             navigationController.navigationBar.prefersLargeTitles = false
         }
         navigationController.navigationBar.tintColor = UIColor.green
+        navigationController.navigationBar.barStyle = .black
         return navigationController;
     }
     

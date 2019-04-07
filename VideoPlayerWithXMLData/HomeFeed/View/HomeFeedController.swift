@@ -9,15 +9,15 @@
 import Foundation
 import UIKit
 
-class HomeFeedController: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, UICollectionViewDataSource, ControllerDelegate {
+class HomeFeedController: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, UICollectionViewDataSource, ControllerDelegate{
     
     var itemList: [RSSFeed] = [];
     let mApiService = ApiService()
     
     lazy var collectionView : DynamicCollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.minimumLineSpacing = 8
-        flowLayout.minimumInteritemSpacing = 4
+        flowLayout.minimumLineSpacing = 10
+        flowLayout.minimumInteritemSpacing = 10
         let collectionView = DynamicCollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.register(ChannelCell.self, forCellWithReuseIdentifier: "890")
@@ -46,7 +46,6 @@ class HomeFeedController: UIViewController, UICollectionViewDelegateFlowLayout, 
     }
     
     
-    
     func fetchData () {
         showProgress()
         let feedParser = ApiService()
@@ -67,6 +66,8 @@ class HomeFeedController: UIViewController, UICollectionViewDelegateFlowLayout, 
     func initViews(){
         collectionView.widthAnchor.constraint(equalToConstant: view.frame.width).isActive = true
         collectionView.heightAnchor.constraint(equalToConstant: view.frame.height).isActive = true
+//        collectionView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -25).isActive = true
+//        collectionView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 25).isActive = true
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -83,7 +84,8 @@ class HomeFeedController: UIViewController, UICollectionViewDelegateFlowLayout, 
         //Handle on item seleted here
         let vc = PodDetailsController()
         vc.videoData = itemList[indexPath.item].channel
-        self.present(vc, animated: true, completion: nil)
+        vc.show()
+//        self.present(vc, animated: true, completion: nil)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -91,18 +93,26 @@ class HomeFeedController: UIViewController, UICollectionViewDelegateFlowLayout, 
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 0, left: 10, bottom :0, right: 10)
+        return UIEdgeInsets(top: 10, left: 10, bottom :0, right: 10)
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "890", for: indexPath) as! ChannelCell
         cell.rssItem = itemList[indexPath.item]
-        if(indexPath.item % 2 == 0){
-            cell.setGradientBackground(colorTop: UIColor.rgb(255, green: 107, blue: 0), colorBottom: UIColor.rgb(255, green: 149, blue: 0))
-        }else{
-            cell.setGradientBackground(colorTop: UIColor.rgb(0, green: 121, blue: 255), colorBottom: UIColor.rgb(9, green: 169, blue: 233))
-        }
+//        if(indexPath.item % 2 == 0){
+//            cell.setGradientBackground(colorTop: UIColor.rgb(255, green: 107, blue: 0), colorBottom: UIColor.rgb(255, green: 149, blue: 0))
+//        }else{
+//            cell.setGradientBackground(colorTop: UIColor.rgb(0, green: 121, blue: 255), colorBottom: UIColor.rgb(9, green: 169, blue: 233))
+//        }
         return cell
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.setNeedsStatusBarAppearanceUpdate()
+    }
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return .lightContent
     }
     
     

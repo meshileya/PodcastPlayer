@@ -24,7 +24,12 @@ class ApiService {
     func userFetchVideoDetail( handler : @escaping CompletionHandler){
         Alamofire.request(homeFeedUrl()).responseXMLObject { (response: DataResponse<RSSFeed>) in
             let rssFeed = response.result.value
-            handler(true, rssFeed!, nil)
+            if(rssFeed != nil){
+                handler(true, rssFeed!, nil)
+            }else{
+//                handler(false, RSSFeed?, nil)
+            }
+            
         }
     }
   
